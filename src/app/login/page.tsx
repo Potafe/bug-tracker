@@ -2,8 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import useAuthStore from '@/store/AuthStore';
 import { users } from '@/data/users';
+
+import useAuthStore from '@/store/AuthStore';
 import Link from 'next/link';
 
 export default function Login() {

@@ -86,7 +86,7 @@ The app uses a simple role-based authentication system:
 
 - **Local Storage**: Data is stored in-browser (no backend)  
 - **Simple Authentication**: Client-side only, for demo purposes  
-- **No Real-time Updates**: Changes are not reflected live between users  
+- **Chart Data Limitation**: The task trend chart combines hardcoded data with live data, which may not accurately reflect historical trends.
 
 ---
 
