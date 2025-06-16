@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type User = {
   username: string;
-  role: 'Developer' | 'Manager';
+  role: 'developer' | 'manager';
 };
 
 type AuthContextType = {

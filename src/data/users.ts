@@ -1,4 +1,4 @@
-export type Role = 'developer' | 'Manager';
+export type Role = 'developer' | 'manager';
 
 export const users: { username: string; password: string; role: Role }[] = [
   {
@@ -14,6 +14,11 @@ export const users: { username: string; password: string; role: Role }[] = [
   {
     username: 'manager1',
     password: 'managerpass',
-    role: 'Manager',
+    role: 'manager',
+  },
+  {
+    username: 'manager2',
+    password: 'managerpass',
+    role: 'manager',
   },
 ];
