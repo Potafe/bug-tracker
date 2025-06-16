@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 
-import TaskCard, { Task } from '@/components/TaskCard/TaskCard';
+import TaskCard from '@/components/TaskCard/TaskCard';
 import TaskTrendChart from '@/components/TaskTrendChart/TaskTrendChart';
 import useTaskStore, { useHydrateTasks } from '@/store/TaskStore';
 
@@ -13,7 +13,7 @@ import './managerDashboard.css';
 
 export default function ManagerDashboard() {
   useHydrateTasks();
-  const { tasks, updateTask, deleteTask, hasHydrated } = useTaskStore();
+  const { tasks, updateTask, hasHydrated } = useTaskStore();
   const [filter, setFilter] = useState<string>('All');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const router = useRouter();
