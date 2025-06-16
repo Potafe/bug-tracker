@@ -1,23 +1,39 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useAuthStore from '@/store/AuthStore';
+import { users } from '@/data/users';
 import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
   const { login, isAuthenticated, role } = useAuthStore();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (isAuthenticated && role) {
-      router.push(`/dashboard/${role}`);
+      router.push(`/dashboard/${role.toLowerCase()}`);
     }
   }, [isAuthenticated, role, router]);
 
-  const handleLogin = (selectedRole: 'manager' | 'dev') => {
-    login(selectedRole);
-    router.push(`/dashboard/${selectedRole}`);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    const user = users.find(
+      (u) => u.username === username && u.password === password
+    );
+
+    if (user) {
+      const roleForUrl = user.role.toLowerCase() as 'manager' | 'developer';
+      login(roleForUrl, user.username);
+      router.push(`/dashboard/${roleForUrl}`);
+    } else {
+      setError('Invalid username or password');
+    }
   };
 
   return (
@@ -40,27 +56,61 @@ export default function Login() {
       </header>
 
       <main className="z-10 relative flex flex-col flex-grow items-center justify-center text-center px-6 py-24 sm:py-32">
-        <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 text-purple-300 drop-shadow">
-          Welcome to BugZen
-        </h2>
-        <p className="text-lg sm:text-xl text-gray-300 max-w-xl mb-10">
-          Please select your role to continue
-        </p>
-        
-        <div className="flex gap-6 flex-col sm:flex-row">
-          <button 
-            onClick={() => handleLogin('dev')}
-            className="px-8 py-3 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white font-bold rounded-lg shadow-lg transition-all hover:shadow-xl"
-          >
-            Login as Developer
-          </button>
+        <div className="bg-gray-900/70 backdrop-blur-sm p-8 rounded-lg shadow-2xl border border-gray-700 w-full max-w-md">
+          <h2 className="text-3xl font-bold mb-6 text-purple-300">Login to BugZen</h2>
           
-          <button 
-            onClick={() => handleLogin('manager')}
-            className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-lg shadow-lg transition-all hover:shadow-xl"
-          >
-            Login as Manager
-          </button>
+          {error && (
+            <div className="bg-red-900/50 text-red-200 px-4 py-2 rounded mb-4">
+              {error}
+            </div>
+          )}
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2 text-left">
+              <label htmlFor="username" className="block text-sm font-medium text-gray-300">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Enter your username"
+                required
+              />
+            </div>
+            
+            <div className="space-y-2 text-left">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            
+            <div>
+              <button
+                type="submit"
+                className="w-full px-8 py-3 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white font-bold rounded-lg shadow-lg transition-all hover:shadow-xl"
+              >
+                Sign In
+              </button>
+            </div>
+          </form>
+          
+          <div className="mt-4 text-sm text-gray-400">
+            <p>Use one of the following accounts:</p>
+            <p className="mt-1"><b>Developer:</b> dev1 / devpass</p>
+            <p className="mt-1"><b>Manager:</b> manager1 / managerpass</p>
+          </div>
         </div>
       </main>
 
