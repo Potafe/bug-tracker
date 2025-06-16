@@ -56,7 +56,22 @@ export default function TaskCard({
 }: Props) {
   const [logHours, setLogHours] = useState('');
 
-  return (
+  const getDisplayStatus = (status: Task['status']) => {
+    if (!isManager && status === 'Pending Approval') {
+      return 'Closed (Pending)';
+    }
+    return status;
+  };
+
+  const handleStatusChange = (id: number, newStatus: Task['status']) => {
+    if (!isManager && newStatus === 'Closed') {
+      onStatusChange?.(id, 'Pending Approval');
+    } else {
+      onStatusChange?.(id, newStatus);
+    }
+  };
+
+ return (
     <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-5 flex flex-col gap-3">
       <div className="flex justify-between items-start">
         <div>
@@ -65,7 +80,7 @@ export default function TaskCard({
         </div>
         <div className="flex flex-col items-end gap-2">
           <span className={`px-2 py-1 rounded text-xs font-semibold ${statusColors[task.status]}`}>
-            {task.status}
+            {getDisplayStatus(task.status)}
           </span>
           <span className={`px-2 py-1 rounded text-xs font-semibold ${priorityColors[task.priority]}`}>
             {task.priority}
@@ -155,19 +170,21 @@ export default function TaskCard({
             </button>
           </>
       )}
-
-        {onStatusChange && (
-          <select
-            className="bg-gray-800 border border-gray-700 text-xs text-white px-2 py-1 rounded"
-            value={task.status}
-            onChange={e => onStatusChange(task.id, e.target.value as Task['status'])}
-          >
-            <option value="Open">Open</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Pending Approval">Pending Approval</option>
-            <option value="Closed">Closed</option>
-          </select>
-        )}
+        
+      {onStatusChange && (
+        <select
+          className="bg-gray-800 border border-gray-700 text-xs text-white px-2 py-1 rounded"
+          value={
+            !isManager && task.status === 'Pending Approval' ? 'Closed' : task.status
+          }
+          onChange={e => handleStatusChange(task.id, e.target.value as Task['status'])}
+        >
+          <option value="Open">Open</option>
+          <option value="In Progress">In Progress</option>
+          {isManager && <option value="Pending Approval">Pending Approval</option>}
+          <option value="Closed">Closed</option>
+        </select>
+      )}
 
         {onEdit && (
           <button
