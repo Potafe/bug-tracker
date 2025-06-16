@@ -1,0 +1,72 @@
+.create-task-form {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    color: #fff;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.create-task-form h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #a855f7;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group .required {
+    color: red;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    color: #fff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.submit-button {
+    background-color: #a855f7;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.submit-button:hover {
+    background-color: #9333ea;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
