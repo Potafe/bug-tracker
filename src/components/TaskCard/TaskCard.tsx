@@ -55,6 +55,8 @@ export default function TaskCard({
   isManager,
 }: Props) {
   const [logHours, setLogHours] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTask, setEditedTask] = useState<Task>(task);
 
   const getDisplayStatus = (status: Task['status']) => {
     if (!isManager && status === 'Pending Approval') {
@@ -169,31 +171,72 @@ export default function TaskCard({
               Reopen
             </button>
           </>
-      )}
+        )}
         
-      {onStatusChange && (
-        <select
-          className="bg-gray-800 border border-gray-700 text-xs text-white px-2 py-1 rounded"
-          value={
-            !isManager && task.status === 'Pending Approval' ? 'Closed' : task.status
-          }
-          onChange={e => handleStatusChange(task.id, e.target.value as Task['status'])}
-        >
-          <option value="Open">Open</option>
-          <option value="In Progress">In Progress</option>
-          {isManager && <option value="Pending Approval">Pending Approval</option>}
-          <option value="Closed">Closed</option>
-        </select>
-      )}
+        {onStatusChange && (
+          <select
+            className="bg-gray-800 border border-gray-700 text-xs text-white px-2 py-1 rounded"
+            value={
+              !isManager && task.status === 'Pending Approval' ? 'Closed' : task.status
+            }
+            onChange={e => handleStatusChange(task.id, e.target.value as Task['status'])}
+          >
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            {isManager && <option value="Pending Approval">Pending Approval</option>}
+            <option value="Closed">Closed</option>
+          </select>
+        )}
 
         {onEdit && (
-          <button
-            onClick={() => onEdit(task)}
-            className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
-          >
-            Edit
-          </button>
+          <>
+            {isEditing ? (
+              <div className="mt-3 border-t border-gray-700 pt-3">
+                <h4 className="text-sm font-semibold text-purple-300 mb-2">Edit Task</h4>
+                <input
+                  type="text"
+                  value={editedTask.title}
+                  onChange={(e) => setEditedTask({...editedTask, title: e.target.value})}
+                  className="w-full mb-2 bg-gray-800 border border-gray-700 p-2 rounded text-white text-sm"
+                />
+                <textarea
+                  value={editedTask.description}
+                  onChange={(e) => setEditedTask({...editedTask, description: e.target.value})}
+                  className="w-full mb-2 bg-gray-800 border border-gray-700 p-2 rounded text-white text-sm"
+                  rows={3}
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      onEdit(editedTask);
+                      setIsEditing(false);
+                    }}
+                    className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white text-xs rounded"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                      setEditedTask(task); 
+                    }}
+                    className="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded"
+              >
+                Edit
+              </button>
+            )}
+          </>
         )}
+
         {onDelete && (
           <button
             onClick={() => onDelete(task.id)}
