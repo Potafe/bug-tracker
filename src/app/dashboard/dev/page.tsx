@@ -9,7 +9,7 @@ import CreateTaskForm from '@/components/TaskForm/CreateTaskForm';
 import TaskTrendChart from '@/components/TaskTrendChart/TaskTrendChart';
 import useTaskStore, { useHydrateTasks } from '@/store/TaskStore';
 
-import './DevDashboard.css';
+import './devDashboard.css';
 
 export default function DevDashboard() {
   useHydrateTasks();

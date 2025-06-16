@@ -14,7 +14,7 @@ export interface Task {
     stepsToReproduce: string;
     environment: string;
     severity: 'Low' | 'Medium' | 'High' | 'Critical';
-    createdAt: string; // renamed to match TaskCard
+    createdAt: string;
 }
 
 interface CreateTaskFormProps {
@@ -45,10 +45,9 @@ const CreateTaskForm = ({ onCreate }: CreateTaskFormProps) => {
             stepsToReproduce,
             environment,
             severity,
-            createdAt: new Date().toISOString(), // renamed property
+            createdAt: new Date().toISOString(),
         };
         onCreate(newTask);
-        // Reset form fields
         setTitle('');
         setDescription('');
         setPriority('Low');
