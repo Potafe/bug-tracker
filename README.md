@@ -49,7 +49,7 @@ A modern, lightweight bug tracking system built with **Next.js**, allowing devel
 The app uses a simple role-based authentication system:
 
 - From the homepage, click **"Login"** or **"Get Started"**  
-- Select either **"Login as Developer"** or **"Login as Manager"**  
+- Login as Developer or login as Manager
 - You'll be redirected to the appropriate dashboard  
 
 ### Developer Dashboard
